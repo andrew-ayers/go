@@ -31,7 +31,7 @@ func NewRand() *rand.Rand {
 	return r
 }
 
-func checkerr(e error) {
+func panicIfError(e error) {
 	if e != nil {
 		panic(e)
 	}
@@ -50,6 +50,58 @@ func Clear() {
 	}
 }
 
+func Border(tile rune) {
+	Box(0, 0, MapX, MapY, tile)
+}
+
+func HLine(xpos int, ypos int, width int, tile rune) {
+	for i := xpos; i < xpos+width; i++ {
+		Set(i, ypos, tile)
+	}
+}
+
+func VLine(xpos int, ypos int, height int, tile rune) {
+	for i := ypos; i < ypos+height; i++ {
+		Set(xpos, i, tile)
+	}
+}
+
+func Box(xpos int, ypos int, width int, height int, tile rune) {
+	HLine(xpos, ypos, width, tile)
+	HLine(xpos, ypos+height-1, width, tile)
+
+	VLine(xpos, ypos, height, tile)
+	VLine((xpos + width - 1), ypos, height, tile)
+}
+
+func FillBox(xpos int, ypos int, width int, height int, tile rune) {
+	for i := ypos; i < ypos+height; i++ {
+		HLine(xpos, i, width, tile)
+	}
+}
+
+func Set(xpos int, ypos int, tile rune) {
+	if xpos >= 0 && xpos < MapX && ypos >= 0 && ypos < MapY {
+		Mapp[ypos*MapX+xpos] = byte(tile)
+	}
+}
+
+func Get(xpos int, ypos int) rune {
+	if xpos >= 0 && xpos < MapX && ypos >= 0 && ypos < MapY {
+		return rune(Mapp[ypos*MapX+xpos])
+	}
+
+	return rune(0)
+}
+
+func IsTile(xpos int, ypos int, tile rune) bool {
+	if xpos >= 0 && xpos < MapX && ypos >= 0 && ypos < MapY {
+		return (Get(xpos, ypos) == tile)
+	}
+
+	return false
+}
+
 func Display() {
 	for y := 0; y < MapY; y++ {
 		var yy = fmt.Sprintf("%2d", y)
@@ -61,14 +113,14 @@ func Display() {
 func Save(filename string) {
 	f, err := os.Create(filename)
 
-	checkerr(err)
+	panicIfError(err)
 
 	defer f.Close()
 
 	for y := 0; y < MapY; y++ {
 		_, err := f.WriteString(fmt.Sprintf("%s\n", Mapp[y*MapX:y*MapX+MapX]))
 
-		checkerr(err)
+		panicIfError(err)
 	}
 
 	f.Sync()

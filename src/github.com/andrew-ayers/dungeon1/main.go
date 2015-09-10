@@ -9,15 +9,28 @@ import (
 
 func main() {
 	dungeon.Init(150, 100)
+
 	dungeon.Clear()
 
-	//cdungeon.Generate(45, true, 4, 50000) // island map
-	//cdungeon.Generate(45, false, 4, 50000) // labyrinth map
-	//cdungeon.Generate(65, true, 4, 80000) // dense cave map
-	cdungeon.Generate(65, true, 4, 80000) // dense cave map
-	//cdungeon.Generate(45, true, 4, 85000) // sparse island map
+	demoCellular()
+
+	dungeon.Border(dungeon.TRock)
+
+	//dungeon.FillBox(50, 50, 60, 40, dungeon.TGrss)
+	//dungeon.Box(50, 50, 60, 40, dungeon.TGrss)
 
 	dungeon.Display()
 
 	dungeon.Save("dungeon.dat")
+}
+
+func demoCellular() {
+	//cdungeon.Generate(45, true, 4, 50000) // island map
+	//cdungeon.Generate(45, false, 4, 50000) // labyrinth map
+	//cdungeon.Generate(65, true, 4, 80000) // dense cave map
+	//cdungeon.Generate(45, true, 4, 85000) // sparse island map
+
+	cdungeon.Generate(65, true, 4, 80000) // dense cave map
+
+	dungeon.Border(dungeon.TRock)
 }
