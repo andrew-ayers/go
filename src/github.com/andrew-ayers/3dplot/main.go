@@ -18,7 +18,7 @@ func fx(z float32) float32 {
 }
 
 func replaceAtIndex(input string, replacement byte, index int) string {
-	return strings.Join([]string{input[:index], string(replacement), input[index+1:]}, "")
+	return input[:index] + string(replacement) + input[index+1:]
 }
 
 func orig() {
