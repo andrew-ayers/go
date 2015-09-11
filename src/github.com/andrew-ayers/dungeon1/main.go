@@ -5,6 +5,7 @@ package main
 import (
 	"github.com/andrew-ayers/helpers/dungeon"
 	cdungeon "github.com/andrew-ayers/helpers/dungeon/cellular"
+	rwdungeon "github.com/andrew-ayers/helpers/dungeon/randwalk"
 )
 
 func main() {
@@ -12,7 +13,9 @@ func main() {
 
 	dungeon.Clear()
 
-	demoCellular()
+	//demoCellular()
+
+	demoRandWalk()
 
 	dungeon.Border(dungeon.TRock)
 
@@ -21,7 +24,7 @@ func main() {
 
 	dungeon.Display()
 
-	dungeon.Save("dungeon.dat")
+	//dungeon.Save("dungeon.dat")
 }
 
 func demoCellular() {
@@ -31,6 +34,8 @@ func demoCellular() {
 	//cdungeon.Generate(45, true, 4, 85000) // sparse island map
 
 	cdungeon.Generate(65, true, 4, 80000) // dense cave map
+}
 
-	dungeon.Border(dungeon.TRock)
+func demoRandWalk() {
+	rwdungeon.Generate(800, 65, 250)
 }
