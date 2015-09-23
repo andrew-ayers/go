@@ -28,14 +28,16 @@ func main() {
 }
 
 func demoCellular() {
-	//cdungeon.Generate(45, true, 4, 50000) // island map
-	//cdungeon.Generate(45, false, 4, 50000) // labyrinth map
-	//cdungeon.Generate(65, true, 4, 80000) // dense cave map
-	//cdungeon.Generate(45, true, 4, 85000) // sparse island map
-
-	cdungeon.Generate(65, true, 4, 80000) // dense cave map
+	//cdungeon.Generate(45, true, 4, 50000) // island
+	//cdungeon.Generate(45, false, 4, 50000) // labyrinth
+	cdungeon.Generate(65, true, 4, 80000) // dense cave
+	//cdungeon.Generate(45, true, 4, 85000) // sparse island
 }
 
 func demoRandWalk() {
-	rwdungeon.Generate(800, 65, 250)
+	//rwdungeon.Generate(200, 55, 75, true, true) // short and long corridors
+	//rwdungeon.Generate(350, 30, 50, true, true) // short corridors
+	//rwdungeon.Generate(350, 80, 100, true, true) // long corridors
+	//rwdungeon.Generate(200, 55, 75, false, false) // eroded caves
+	rwdungeon.Generate(350, 80, 100, false, false) // chambers and halls
 }

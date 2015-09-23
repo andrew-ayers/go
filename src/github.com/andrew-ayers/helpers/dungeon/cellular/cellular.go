@@ -6,9 +6,9 @@ import (
 	"github.com/andrew-ayers/helpers/dungeon"
 )
 
-func open(p int) {
-	r := dungeon.NewRand()
+var r = dungeon.NewRand()
 
+func open(p int) {
 	for i := 0; i < dungeon.MapX*dungeon.MapY; i++ {
 		if r.Intn(99) >= p {
 			dungeon.Mapp[i] = byte(dungeon.TOpen)
@@ -33,8 +33,6 @@ func isClosed(xpos int, ypos int) int {
 }
 
 func Generate(p int, h bool, n int, iterations int) {
-	r := dungeon.NewRand()
-
 	open(p)
 
 	var opened, closed = dungeon.TOpen, dungeon.TRock
