@@ -46,5 +46,5 @@ func demoRandWalk() {
 }
 
 func demoRoomGen() {
-	rgdungeon.Generate()
+	rgdungeon.Generate(15)
 }
