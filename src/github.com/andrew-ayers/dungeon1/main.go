@@ -6,6 +6,7 @@ import (
 	"github.com/andrew-ayers/helpers/dungeon"
 	cdungeon "github.com/andrew-ayers/helpers/dungeon/cellular"
 	rwdungeon "github.com/andrew-ayers/helpers/dungeon/randwalk"
+	rgdungeon "github.com/andrew-ayers/helpers/dungeon/roomgen"
 )
 
 func main() {
@@ -15,7 +16,9 @@ func main() {
 
 	//demoCellular()
 
-	demoRandWalk()
+	//demoRandWalk()
+
+	demoRoomGen()
 
 	dungeon.Border(dungeon.TRock)
 
@@ -40,4 +43,8 @@ func demoRandWalk() {
 	//rwdungeon.Generate(350, 80, 100, true, true) // long corridors
 	//rwdungeon.Generate(200, 55, 75, false, false) // eroded caves
 	rwdungeon.Generate(350, 80, 100, false, false) // chambers and halls
+}
+
+func demoRoomGen() {
+	rgdungeon.Generate()
 }
