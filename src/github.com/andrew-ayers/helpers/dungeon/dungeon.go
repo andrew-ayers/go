@@ -13,6 +13,7 @@ var TOpen = '.' // open ground
 var TRock = 'X' // rock
 var TSand = ':' // sand
 var TGrss = '+' // grass
+var TBush = 'W' // bush
 var TTree = 'Y' // tree
 var TWatr = '~' // water
 var TWhrl = '@' // whirlpool
@@ -22,6 +23,8 @@ var TDoor = 'D' // door
 var TStup = '>' // stairs up
 var TStdn = '<' // stairs down
 var TBrdg = '=' // bridge
+var TDais = '*' // dais
+var TColm = '|' // column
 
 var Mapp, MapX, MapY = []byte{}, 0, 0
 
@@ -51,32 +54,65 @@ func Clear() {
 }
 
 func Border(tile rune) {
-	Box(0, 0, MapX, MapY, tile)
+	Box(0, 0, MapX, MapY, tile, 1)
 }
 
-func HLine(xpos int, ypos int, width int, tile rune) {
-	for i := xpos; i < xpos+width; i++ {
+func HLine(xpos int, ypos int, width int, tile rune, incr int) {
+	for i := xpos; i < xpos+width; i += incr {
 		Set(i, ypos, tile)
 	}
 }
 
-func VLine(xpos int, ypos int, height int, tile rune) {
-	for i := ypos; i < ypos+height; i++ {
+func VLine(xpos int, ypos int, height int, tile rune, incr int) {
+	for i := ypos; i < ypos+height; i += incr {
 		Set(xpos, i, tile)
 	}
 }
 
-func Box(xpos int, ypos int, width int, height int, tile rune) {
-	HLine(xpos, ypos, width, tile)
-	HLine(xpos, ypos+height-1, width, tile)
-
-	VLine(xpos, ypos, height, tile)
-	VLine((xpos + width - 1), ypos, height, tile)
+func Box(xpos int, ypos int, width int, height int, tile rune, incr int) {
+	HLine(xpos, ypos, width, tile, incr)
+	VLine((xpos + width - 1), ypos, height, tile, incr)
+	HLine(xpos, ypos+height-1, width, tile, incr)
+	VLine(xpos, ypos, height, tile, incr)
 }
 
 func FillBox(xpos int, ypos int, width int, height int, tile rune) {
 	for i := ypos; i < ypos+height; i++ {
-		HLine(xpos, i, width, tile)
+		HLine(xpos, i, width, tile, 1)
+	}
+}
+
+func Flood(xpos int, ypos int, fill rune, border rune, eight bool) {
+	if eight == true {
+		flood8(xpos, ypos, fill, border)
+	} else {
+		flood4(xpos, ypos, fill, border)
+	}
+}
+
+func flood4(xpos int, ypos int, fill rune, border rune) {
+	var this = Get(xpos, ypos)
+	if this != border && this != fill {
+		Set(xpos, ypos, fill)
+		flood4(xpos, ypos-1, fill, border)
+		flood4(xpos+1, ypos, fill, border)
+		flood4(xpos, ypos+1, fill, border)
+		flood4(xpos-1, ypos, fill, border)
+	}
+}
+
+func flood8(xpos int, ypos int, fill rune, border rune) {
+	var this = Get(xpos, ypos)
+	if this != border && this != fill {
+		Set(xpos, ypos, fill)
+		flood8(xpos, ypos-1, fill, border)
+		flood8(xpos+1, ypos-1, fill, border)
+		flood8(xpos+1, ypos, fill, border)
+		flood8(xpos+1, ypos+1, fill, border)
+		flood8(xpos, ypos+1, fill, border)
+		flood8(xpos-1, ypos+1, fill, border)
+		flood8(xpos-1, ypos, fill, border)
+		flood8(xpos-1, ypos-1, fill, border)
 	}
 }
 
@@ -92,6 +128,30 @@ func Get(xpos int, ypos int) rune {
 	}
 
 	return rune(0)
+}
+
+func Constrain(x int, y int, w int, h int, minx int, miny int, maxx int, maxy int) (int, int) {
+	if x < minx {
+		x = minx
+	}
+
+	if y < miny {
+		y = miny
+	}
+
+	if x+w > maxx-1 {
+		x = maxx - w
+	}
+
+	if y+h > maxy-1 {
+		y = maxy - h
+	}
+
+	return x, y
+}
+
+func ConstrainToMap(x int, y int, w int, h int) (int, int) {
+	return Constrain(x, y, w, h, 0, 0, MapX, MapY)
 }
 
 func IsTile(xpos int, ypos int, tile rune) bool {
