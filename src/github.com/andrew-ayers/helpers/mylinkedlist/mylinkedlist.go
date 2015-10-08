@@ -1,5 +1,10 @@
 package mylinkedlist
 
+import (
+	//"fmt"
+	"reflect"
+)
+
 type List struct {
 	head   *Element
 	curr   *Element
@@ -8,10 +13,15 @@ type List struct {
 }
 
 type Element struct {
-	value interface{} // All types satisfy the empty interface, so we can store anything here.
+	Value interface{} // All types satisfy the empty interface, so we can store anything here.
 	Prev  *Element
 	Next  *Element
 }
+
+/*
+func (l *List) Init(elements int, value interface{}) int {
+}
+*/
 
 func (l *List) Next() (value interface{}) {
 	if l.length > 0 && l.curr.Next != nil {
@@ -94,7 +104,7 @@ func (l *List) Add(value interface{}) int {
 	return l.length
 }
 
-// Insert an entry at the current location
+// ****Insert an entry at the current location
 func (l *List) Insert(value interface{}) int {
 	return 0
 }
@@ -111,10 +121,49 @@ func (l *List) Update(value interface{}) (ret interface{}) {
 	return nil
 }
 
-// Delete the entry at the cursor location
+// ****Delete the entry at the cursor location
 func (l *List) Delete() int {
 	if l.length > 0 {
 	}
 
 	return 0
+}
+
+/*
+func (l *List) Reverse() int {
+}
+
+func (l *List) Shuffle(rounds int) int {
+}
+
+func (l *List) Fill(value interface{}) int {
+}
+*/
+
+func (l *List) Position() int {
+	pos := 0
+
+	check := l.curr
+
+	if l.length > 0 {
+		v := l.Head()
+
+		for {
+			if v == nil {
+				break
+			}
+
+			if reflect.DeepEqual(check, v) == true {
+				l.curr = check
+
+				return pos
+			}
+
+			v = l.Next()
+
+			pos++
+		}
+	}
+
+	return -1
 }
